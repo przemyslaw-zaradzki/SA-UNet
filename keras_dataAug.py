@@ -4,6 +4,7 @@ import numpy as np
 import random
 import threading, os, time
 import logging
+import argparse
 
 logger = logging.getLogger(__name__)
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -133,7 +134,7 @@ def threadOPS(img_path, new_img_path, label_path, new_label_path):
             print('contain file folder')
             exit()
         else:
-            img_num = img_num + 1;
+            img_num = img_num + 1
     # label num
     for label_name in label_names:
         tmp_label_name = os.path.join(label_path, label_name)
@@ -173,9 +174,20 @@ def threadOPS(img_path, new_img_path, label_path, new_label_path):
             _index += 1
             time.sleep(5)
 
-# Please modify the path
-if __name__ == '__main__':
-    threadOPS("DRIVE/train/image", #set your path of training images
-              "Drive/aug/image",
-              "DRIVE/train/label",# set your path of training labels
-              "DRIVE/aug/label")
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--dataset', type=str, required=True)
+args = parser.parse_args()
+
+if not os.path.isdir(f"data/{args.dataset}/aug"):
+    os.mkdir(f"data/{args.dataset}/aug")
+if not os.path.isdir(f"data/{args.dataset}/aug/images"):
+    os.mkdir(f"data/{args.dataset}/aug/images")
+if not os.path.isdir(f"data/{args.dataset}/aug/label"):
+    os.mkdir(f"data/{args.dataset}/aug/label")
+
+threadOPS(f"data/{args.dataset}/training/images",  # set your path of training images
+            f"data/{args.dataset}/aug/images",
+            f"data/{args.dataset}/training/manual",  # set your path of training labels
+            f"data/{args.dataset}/aug/label")

@@ -6,6 +6,9 @@ from keras.layers import Input,Conv2DTranspose, MaxPooling2D,BatchNormalization,
 
 from Spatial_Attention import *
 
+
+
+
 def Backbone(input_size=(512, 512, 3), block_size=7,keep_prob=0.9,start_neurons=16,lr=1e-3):
 
     inputs = Input(input_size)
@@ -18,7 +21,6 @@ def Backbone(input_size=(512, 512, 3), block_size=7,keep_prob=0.9,start_neurons=
     conv1 = BatchNormalization()(conv1)
     conv1 = Activation('relu')(conv1)
     pool1 = MaxPooling2D((2, 2))(conv1)
-
 
 
     conv2 = Conv2D(start_neurons * 2, (3, 3), activation=None, padding="same")(pool1)
@@ -98,6 +100,9 @@ def Backbone(input_size=(512, 512, 3), block_size=7,keep_prob=0.9,start_neurons=
     model.compile(optimizer=Adam(lr=lr), loss='binary_crossentropy', metrics=['accuracy'])
 
     return model
+
+
+
 def SA_UNet(input_size=(512, 512, 3), block_size=7,keep_prob=0.9,start_neurons=16,lr=1e-3):
 
     inputs = Input(input_size)
@@ -110,7 +115,6 @@ def SA_UNet(input_size=(512, 512, 3), block_size=7,keep_prob=0.9,start_neurons=1
     conv1 = BatchNormalization()(conv1)
     conv1 = Activation('relu')(conv1)
     pool1 = MaxPooling2D((2, 2))(conv1)
-
 
 
     conv2 = Conv2D(start_neurons * 2, (3, 3), activation=None, padding="same")(pool1)

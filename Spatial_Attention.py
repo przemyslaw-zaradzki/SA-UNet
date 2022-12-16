@@ -1,6 +1,8 @@
-from keras.layers import GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Dense, multiply, Permute, Concatenate, \
-    Conv2D, Add, Activation, Lambda,Conv1D
+from keras.layers import multiply, Permute, Concatenate, Conv2D, Lambda
 from Dropblock import  *
+
+
+
 def spatial_attention(input_feature):
     kernel_size = 7
 
