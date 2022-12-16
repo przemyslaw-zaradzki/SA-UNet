@@ -3,9 +3,14 @@ import cv2
 import argparse
 
 import numpy as np
+import tensorflow as tf
 import matplotlib.pyplot as plt
 from  scipy.misc.pilutil import *
 from keras.callbacks import TensorBoard, ModelCheckpoint
+
+
+
+tf.random.set_random_seed(42)
 
 
 
