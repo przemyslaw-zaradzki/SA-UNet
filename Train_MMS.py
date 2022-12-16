@@ -63,13 +63,13 @@ TensorBoard(log_dir='./logs', histogram_freq=0,
 from  SA_UNet import *
 model=SA_UNet(input_size=(desired_size,desired_size,3),start_neurons=16,lr=1e-3,keep_prob=0.82,block_size=7)
 model.summary()
-weight=f"Model/{args.dataset}_SA_UNet.h5"
+weight=f"Model/{args.dataset}/{args.dataset}_SA_UNet.h5"
 restore=args.restore
 
 if restore and os.path.isfile(weight):
     model.load_weights(weight)
 
-model_checkpoint = ModelCheckpoint(weight, monitor='val_accuracy', verbose=1, save_best_only=False)
+model_checkpoint = ModelCheckpoint(weight, monitor='val_accuracy', verbose=1, save_best_only=True)
 
 
 history=model.fit(x_train, y_train,
@@ -77,7 +77,7 @@ history=model.fit(x_train, y_train,
                 batch_size=args.batch_size,
                 validation_split=0.15,
                 shuffle=True,
-                callbacks= [TensorBoard(log_dir='./logs'), model_checkpoint])
+                callbacks= [TensorBoard(log_dir=f'./logs/{args.dataset}'), model_checkpoint])
 
 print(history.history.keys())
 
