@@ -20,6 +20,7 @@ parser.add_argument('--epochs', type=int, default=25, required=False)
 parser.add_argument('--batch_size', type=int, default=4, required=False)
 parser.add_argument('--data_location', default='data/', type=str, required=False)
 parser.add_argument('--size', default=384, type=int, required=False)
+parser.add_argument('--validation_split', default=0.2, type=float, required=False)
 parser.add_argument('--restore', default=False, type=bool, required=False)
 args = parser.parse_args()
 
@@ -56,13 +57,17 @@ x_train = np.reshape(x_train, (
 len(x_train), desired_size, desired_size, 3))  # adapt this if using `channels_first` image data format
 y_train = np.reshape(y_train, (len(y_train), desired_size, desired_size, 1))  # adapt this if using `channels_first` im
 
-TensorBoard(log_dir='./logs', histogram_freq=0,
+TensorBoard(log_dir=f'./logs/{args.dataset}', histogram_freq=0,
             write_graph=True, write_images=True)
 
 
 from  SA_UNet import *
 model=SA_UNet(input_size=(desired_size,desired_size,3),start_neurons=16,lr=1e-3,keep_prob=0.82,block_size=7)
 model.summary()
+
+if not os.path.isdir(f"Model/{args.dataset}"):
+    os.mkdir(f"Model/{args.dataset}")
+
 weight=f"Model/{args.dataset}/{args.dataset}_SA_UNet.h5"
 restore=args.restore
 
@@ -75,7 +80,7 @@ model_checkpoint = ModelCheckpoint(weight, monitor='val_accuracy', verbose=1, sa
 history=model.fit(x_train, y_train,
                 epochs=args.epochs, #first  100 with lr=1e-3,,and last 50 with lr=1e-4
                 batch_size=args.batch_size,
-                validation_split=0.15,
+                validation_split=args.validation_split,
                 shuffle=True,
                 callbacks= [TensorBoard(log_dir=f'./logs/{args.dataset}'), model_checkpoint])
 

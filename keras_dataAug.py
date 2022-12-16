@@ -5,9 +5,12 @@ import random
 import threading, os, time
 import logging
 import argparse
+import tensorflow as tf
 
 logger = logging.getLogger(__name__)
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+tf.random.set_random_seed(42)
+
 
 
 class DataAugmentation:
