@@ -22,7 +22,6 @@ from  SA_UNet import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, required=True)
-parser.add_argument('--batch_size', type=int, default=384, required=False)
 parser.add_argument('--size', default=384, type=int, required=False)
 args = parser.parse_args()
 
@@ -64,6 +63,12 @@ weight=f"Model/{args.dataset}/{args.dataset}_SA_UNet.h5"
 model.load_weights(weight)
 
 predictions = model.predict(x_test)
+
+for idx in range(len(test_files)):
+    prediction = 255*predictions[idx,:,:,0]
+    prediction = prediction.astype(np.uint8)
+    prediction = Image.fromarray(prediction)
+    prediction.save(f"Model/{args.dataset}/{args.dataset}_test_{idx}.png")
 
 #====== Evaluate the results
 print("\n\n========  Evaluate the results =======================")
