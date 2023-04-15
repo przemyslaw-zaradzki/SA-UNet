@@ -4,9 +4,6 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, required=True)
-parser.add_argument('--channels', type=int, default=3, required=False)
-parser.add_argument('--height', type=int, default=385, required=False)
-parser.add_argument('--width', type=int, default=385, required=False)
 parser.add_argument('--folds', type=int, default=1, required=False)
 args = parser.parse_args()
 
